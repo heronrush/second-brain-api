@@ -30,7 +30,7 @@ export async function createNewUser(
   }
 }
 
-// checks if user already in the db
+// checks if user already in the db for signup
 export async function checkSignupUserExists(
   req: Request,
   res: Response,

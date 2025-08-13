@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "public"."ContentType" AS ENUM ('TWEET', 'VIDEO', 'DOCUMENT', 'LINK');
+
 -- CreateTable
 CREATE TABLE "public"."User" (
     "id" SERIAL NOT NULL,
@@ -10,9 +13,10 @@ CREATE TABLE "public"."User" (
 -- CreateTable
 CREATE TABLE "public"."Content" (
     "id" SERIAL NOT NULL,
-    "link" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "description" TEXT,
+    "link" TEXT NOT NULL,
+    "type" "public"."ContentType" NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Content_pkey" PRIMARY KEY ("id")

@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { validateSigninData } from "../middleware/auth";
-import { generateToken } from "../utils/tokenGenerator";
 import { checkSigninUserExists } from "../middleware/db";
 
 export const signinRouter = Router();

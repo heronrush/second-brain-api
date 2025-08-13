@@ -1,8 +1,15 @@
 import { Router } from "express";
-import { generateToken, validateSigninData } from "../middleware/auth";
+import { validateSigninData } from "../middleware/auth";
+import { generateToken } from "../utils/tokenGenerator";
+import { checkSigninUserExists } from "../middleware/db";
 
 export const signinRouter = Router();
 
-signinRouter.post("/api/v1/signin", validateSigninData, (req, res) => {
-  res.json({ msg: "signin router" });
-});
+signinRouter.post(
+  "/api/v1/signin",
+  validateSigninData,
+  checkSigninUserExists,
+  (req, res) => {
+    res.json({ msg: "signin success" });
+  }
+);

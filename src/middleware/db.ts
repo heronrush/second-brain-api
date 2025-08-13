@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { PrismaClient } from "../generated/prisma";
 import { generateToken } from "../utils/tokenGenerator";
+import { checkPassword, hashPassword } from "../utils/hashPassword";
 
 const prisma = new PrismaClient();
 
@@ -13,10 +14,12 @@ export async function createNewUser(
 ) {
   const { email, password } = req.body;
 
+  const hashedPassword = await hashPassword(password);
+
   const newUser = await prisma.user.create({
     data: {
       email: email,
-      password: password,
+      password: hashedPassword,
     },
   });
 
@@ -61,14 +64,24 @@ export async function checkSigninUserExists(
   const userExists = await prisma.user.findUnique({
     where: {
       email: email,
-      password: password,
     },
   });
 
   if (userExists) {
-    const token = generateToken(email);
-    res.json({ msg: "signin success", token });
+    const passwordIsCorrect = await checkPassword(
+      password,
+      userExists.password
+    );
+
+    if (passwordIsCorrect) {
+      const token = generateToken(email);
+      res.json({ msg: "signin success", token });
+    } else {
+      res.json({ msg: "password is incorrect while signing in" });
+    }
   } else {
-    res.json({ msg: "email or password is wrong" });
+    res.json({
+      msg: "no user exists with the provided email while signing in",
+    });
   }
 }

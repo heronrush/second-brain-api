@@ -25,8 +25,8 @@ contentRouter.post("/api/v1/content", async (req, res) => {
 });
 
 // Fetching all existing documents for a single authenticated user (no pagination)
-contentRouter.get("/api/v1/content", async (req, res) => {
-  const { userId } = req.body;
+contentRouter.get("/api/v1/content/:userId", async (req, res) => {
+  const userId = parseInt(req.params.userId);
 
   const getAllContents = await prisma.content.findMany({
     where: {
@@ -35,11 +35,11 @@ contentRouter.get("/api/v1/content", async (req, res) => {
   });
 
   if (getAllContents.length > 0) {
-    res.json({ content: getAllContents });
+    res.json({ contents: getAllContents });
   } else {
     res.json({
       msg: "user has not added any contents yet",
-      content: getAllContents,
+      contents: getAllContents,
     });
   }
 });

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import bcrypt from "bcrypt";
 import { PrismaClient } from "../generated/prisma";
 import { generateToken } from "../utils/jwt";
 import { checkPassword, hashPassword } from "../utils/hashPassword";
@@ -24,7 +23,8 @@ export async function createNewUser(
   });
 
   if (newUser) {
-    next();
+    const token = generateToken(email);
+    res.json({ msg: "signup success", token, userId: newUser.id });
   } else {
     res.json({ msg: "error while saving a new user to db" });
   }
@@ -75,7 +75,7 @@ export async function checkSigninUserExists(
 
     if (passwordIsCorrect) {
       const token = generateToken(email);
-      res.json({ msg: "signin success", token });
+      res.json({ msg: "signin success", token, userId: userExists.id });
     } else {
       res.json({ msg: "password is incorrect while signing in" });
     }

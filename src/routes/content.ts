@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { PrismaClient } from "../generated/prisma";
+import { verifyToken } from "../middleware/auth";
 
 export const contentRouter = Router();
 
 const prisma = new PrismaClient();
+
+contentRouter.use(verifyToken);
 
 contentRouter.post("/api/v1/content", async (req, res) => {
   const { title, description, link, type, userId } = req.body;

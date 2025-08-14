@@ -24,9 +24,24 @@ contentRouter.post("/api/v1/content", async (req, res) => {
   res.json({ msg: "new content added" });
 });
 
-// Fetching all existing documents (no pagination)
-contentRouter.get("/api/v1/content", (req, res) => {
-  res.json({ msg: "fetchs all exisiting content" });
+// Fetching all existing documents for a single authenticated user (no pagination)
+contentRouter.get("/api/v1/content", async (req, res) => {
+  const { userId } = req.body;
+
+  const getAllContents = await prisma.content.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (getAllContents.length > 0) {
+    res.json({ content: getAllContents });
+  } else {
+    res.json({
+      msg: "user has not added any contents yet",
+      content: getAllContents,
+    });
+  }
 });
 
 // delete a content

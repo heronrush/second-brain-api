@@ -45,7 +45,7 @@ export async function checkSignupUserExists(
   });
 
   if (userExists) {
-    res.json({
+    res.status(403).json({
       msg: "user already exists in the db, provide different unique email",
     });
   } else {
@@ -77,10 +77,10 @@ export async function checkSigninUserExists(
       const token = generateToken(email);
       res.json({ msg: "signin success", token, userId: userExists.id });
     } else {
-      res.json({ msg: "password is incorrect while signing in" });
+      res.status(403).json({ msg: "password is incorrect while signing in" });
     }
   } else {
-    res.json({
+    res.status(403).json({
       msg: "no user exists with the provided email while signing in",
     });
   }

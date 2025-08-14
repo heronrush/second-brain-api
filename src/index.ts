@@ -1,13 +1,16 @@
 import express, { NextFunction, Request, Response } from "express";
 import { rootRouter } from "./routes/root";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
+
 app.use(express.json());
 
 app.use(rootRouter);
 
 app.get("/", (req, res) => {
-  res.json({ msg: "hello wrld" });
+  res.json({ msg: "second brain" });
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

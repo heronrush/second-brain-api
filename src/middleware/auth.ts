@@ -29,7 +29,7 @@ export function validateSignupData(
   if (validData.success) {
     next();
   } else {
-    res.status(411).json({ msg: "not valid data provided in signup" });
+    res.status(411).json({ msg: "Error in signup inputs" });
   }
 }
 

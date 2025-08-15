@@ -51,13 +51,13 @@ contentRouter.delete("/api/v1/content", async (req, res) => {
   try {
     const deleteContent = await prisma.content.delete({
       where: {
-        id: contentId,
-        userId: userId,
+        id: parseInt(contentId),
+        userId: parseInt(userId),
       },
     });
     res.json({ msg: "successfully deleted" });
   } catch (err) {
-    res.json({
+    res.status(403).json({
       msg: "not deleted because there is no content or you've provided an incorrect content id",
     });
   }

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { PrismaClient } from "../generated/prisma";
 import { generateToken } from "../utils/jwt";
 import { checkPassword, hashPassword } from "../utils/hashPassword";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 

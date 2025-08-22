@@ -68,6 +68,6 @@ export async function verifyToken(
       }
     });
   } else {
-    res.json({ msg: "no token provided" });
+    res.json({ msg: "no valid token provided" });
   }
 }
